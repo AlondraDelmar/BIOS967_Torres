@@ -1,8 +1,5 @@
-IP data
-Objective: To isolate and identify specific proteins or protein complexes from a complex mixture of proteins.
-	IP identifies the presence of the target proteins in the eluate.
-	The eluted proteins can be visualized on a gel to confirmed with specific antibodies (PET117).
-	Co-immunoprecipitated proteins will indicate interactions with the target proteins.
+Mass Spectrometry analysis of brown adipose tissue in ground squirrels
+Objective: To learn how to conduct a thorough examination of metabolomics data acquired via mass spectrometry and utilizing statistical techniques in the R programming for a detailed investigation and comprehension.
 Interpretation:
-Results indicate whether the target proteins interact with other proteins.
-Species: HEK293 cells
+The analyzes could potentially determine the specific metabolites that are essential inhibernation
+Species: brown adipose tissue
