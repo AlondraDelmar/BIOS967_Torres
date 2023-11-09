@@ -6,7 +6,7 @@ head(Brown_adipose_2022)
 #install.packages("openxlsx")
 library(openxlsx)
 ?read.xlsx
-Brown_adipose_2022 <- read.xlsx("data/Brown adipose 2022.xlsx",rowNames = T)
+Brown_adipose_2022 <- read.xlsx("data/Brown adipose 2022.xlsx",rowNames = F) #DS: keep the row names
 Brown_adipose_2022[1:3,]
 Brown_adipose_2022
 #install.packages("ggplot2")
@@ -20,6 +20,7 @@ library(ggthemes)
 #install.packages("gmodels")
 library(gmodels)
 library(export)
+library(tidyverse)
 #Calculate the Principal Components (PC) using fast.prcomp included in gmodels.
 pca.info <- fast.prcomp(Brown_adipose_2022)
 #check PCA results.
@@ -57,3 +58,20 @@ ggplot(data = data_df, aes(x = , y = , fill = value)) +
   theme_minimal() +
   labs(title = "Heatmap") +
   theme(axis.text.x = element_text(angle = 48, hjust = 1))
+
+####DS
+
+a=Brown_adipose_2022 %>%
+  mutate(feature=seq(1:nrow(Brown_adipose_2022))) %>%
+  select(-Feature) %>%
+  pivot_longer(-feature)
+
+
+
+ggplot(data = pivot_longer(Brown_adipose_2022[1:48,], -Feature), aes(x = name, y = Feature, fill = log(value))) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "red") +
+  theme_minimal() +
+  labs(title = "Heatmap") +
+  theme(axis.text.x = element_text(angle = 48, hjust = 1)) +
+  theme(axis.text.y=element_blank(), axis.text.x=element_blank())
