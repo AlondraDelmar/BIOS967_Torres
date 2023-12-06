@@ -1,3 +1,148 @@
+---
+title: "Individual Project"
+output: html_document
+---
+
+# Load Required Packages
+
+```{r load-packages, echo=TRUE}
+# install.packages("openxlsx")
+library(openxlsx)
+# install.packages("ggplot2")
+library(ggplot2)
+# install.packages("ggpubr")
+# install.packages("ggthemes")
+library(ggpubr)
+library(ggthemes)
+# install.packages("gmodels")
+library(gmodels)
+library(export)
+library(tidyverse)
+```
+
+```{r}
+Brown_adipose_2022 = read.xlsx("Brown adipose 2022.xlsx", rowNames = FALSE)
+head(Brown_adipose_2022)
+dat2 = t(Brown_adipose_2022[, 2:49])
+dat2 = as.data.frame(dat2)
+Type = c(rep("4_IBA", 8), rep("5_MAR", 8), rep("2_OCT", 9), rep("1_SEP", 9), rep("3_TOR", 14))
+dat2$Type = Type
+ord = prcomp(dat2[, 1:356])
+summary(ord)
+```
+
+```{r}
+dt = ord$x
+df = data.frame(dt, dat2$Type)
+xlab = paste0("PC1(", round(summary(ord)$importance[2, 1] * 100, 2), "%)")
+ylab = paste0("PC2(", round(summary(ord)$importance[2, 2] * 100, 2), "%)")
+ggplot(df, aes(df$PC1, df$PC2, color = df$Type)) +
+  stat_ellipse(aes(fill = df$Type), type = "norm", geom = "polygon", alpha = 0.2, color = NA) +
+  guides(fill = "none") +
+  geom_point() +
+  labs(x = xlab, y = ylab, color = "")
+a = Brown_adipose_2022 %>%
+  mutate(feature = seq(1:nrow(Brown_adipose_2022))) %>%
+  select(-Feature) %>%
+  pivot_longer(-feature)
+```
+
+```{}
+dat = Brown_adipose_2022[, 2:49]
+dat1 = apply(dat, 1, function(x) scale(x))
+t(dat1)
+dat2 = data.frame(Feature = Brown_adipose_2022[, 1])
+dat3 = cbind(dat2, t(dat1))
+
+ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "red") +
+  theme_minimal() +
+  labs(title = "Heatmap") +
+  theme(axis.text.x = element_text(angle = 48, hjust = 1)) +
+  theme(axis.text.y = element_blank(), axis.text.x = element_blank())
+# IBA Data Heatmap
+dat = Brown_adipose_2022[, 2:9]
+dat1 = apply(dat, 1, function(x) scale(x))
+t(dat1)
+dat2 = data.frame(Feature = Brown_adipose_2022[, 1])
+dat3 = cbind(dat2, t(dat1))
+
+ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient(low = "blue", high = "white") +
+  theme_minimal() +
+  labs(title = "Heatmap") +
+  theme(axis.text.x = element_text(angle = 48, hjust = 1)) +
+  theme(axis.text.y = element_blank(), axis.text.x = element_blank())
+
+# MAR Data Heatmap
+dat = Brown_adipose_2022[, 10:17]
+dat1 = apply(dat, 1, function(x) scale(x))
+t(dat1)
+dat2 = data.frame(Feature = Brown_adipose_2022[, 1])
+dat3 = cbind(dat2, t(dat1))
+
+ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient(low = "blue", high = "white") +
+  theme_minimal() +
+  labs(title = "Heatmap") +
+  theme(axis.text.x = element_text(angle = 48, hjust = 1)) +
+  theme(axis.text.y = element_blank(), axis.text.x = element_blank())
+
+# OCT Data Heatmap
+dat = Brown_adipose_2022[, 18:26]
+dat1 = apply(dat, 1, function(x) scale(x))
+#t(dat1)
+dat2 = data.frame(Feature = Brown_adipose_2022[, 1])
+dat3 = cbind(dat2, t(dat1))
+```
+
+```{r}
+ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient(low = "blue", high = "white") +
+  theme_minimal() +
+  labs(title = "Heatmap") +
+  theme(axis.text.x = element_text(angle = 48, hjust = 1)) +
+  theme(axis.text.y = element_blank(), axis.text.x = element_blank())
+
+# SEP Data Heatmap
+dat = Brown_adipose_2022[, 27:35]
+dat1 = apply(dat, 1, function(x) scale(x))
+#t(dat1)
+dat2 = data.frame(Feature = Brown_adipose_2022[, 1])
+dat3 = cbind(dat2, t(dat1))
+```
+
+```{r}
+
+ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient(low = "blue", high = "white") +
+  theme_minimal() +
+  labs(title = "Heatmap") +
+  theme(axis.text.x = element_text(angle = 48, hjust = 1)) +
+  theme(axis.text.y = element_blank(), axis.text.x = element_blank())
+
+# TOR Data Heatmap
+dat = Brown_adipose_2022[, 36:49]
+dat1 = apply(dat, 1, function(x) scale(x))
+t(dat1)
+dat2 = data.frame(Feature = Brown_adipose_2022[, 1])
+dat3 = cbind(dat2, t(dat1))
+
+ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient(low = "blue", high = "white") +
+  theme_minimal() +
+  labs(title = "Heatmap") +
+  theme(axis.text.x = element_text(angle = 48, hjust = 1)) 
+```
+
+
+```{r}
 
 #Starting Individual Project
 
@@ -182,5 +327,4 @@ ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = va
   labs(title = "Heatmap") + #Sets the title of the plot to "Heatmap"
   theme(axis.text.x = element_text(angle = 48, hjust = 1)) + #rotates the x-axis text by 48 degrees, and hjust = 1 right-aligns the text.
   theme(axis.text.y=element_blank(), axis.text.x=element_blank()) #Hides the y-axis and x-axis text, providing a cleaner look when axis labels are not necessary.
-
-
+```
