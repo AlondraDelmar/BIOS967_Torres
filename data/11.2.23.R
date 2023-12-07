@@ -182,5 +182,31 @@ ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = va
   labs(title = "Heatmap") + #Sets the title of the plot to "Heatmap"
   theme(axis.text.x = element_text(angle = 48, hjust = 1)) + #rotates the x-axis text by 48 degrees, and hjust = 1 right-aligns the text.
   theme(axis.text.y=element_blank(), axis.text.x=element_blank()) #Hides the y-axis and x-axis text, providing a cleaner look when axis labels are not necessary.
+# Function to determine top metabolites for each variable
+get_top_metabolites <- function(data, variable_columns, num_top_metabolites = 10) {
+  dat = data[, variable_columns]
+  dat1 = apply(dat, 1, function(x) scale(x))
+  top_metabolites_indices = apply(dat1, 1, function(x) order(x, decreasing = TRUE)[1:num_top_metabolites])
+  top_metabolites = rownames(dat)[top_metabolites_indices]
+  return(top_metabolites)
+}
+
+# Determine top metabolites for the entire dataset
+top_metabolites_all = get_top_metabolites(Brown_adipose_2022, 2:49)
+
+# Determine top metabolites for each variable
+top_metabolites_IBA = get_top_metabolites(Brown_adipose_2022, 2:9)
+top_metabolites_MAR = get_top_metabolites(Brown_adipose_2022, 10:17)
+top_metabolites_OCT = get_top_metabolites(Brown_adipose_2022, 18:26)
+top_metabolites_SEP = get_top_metabolites(Brown_adipose_2022, 27:35)
+top_metabolites_TOR = get_top_metabolites(Brown_adipose_2022, 36:49)
+
+# Print  the top metabolites
+print(top_metabolites_all)
+print(top_metabolites_IBA)
+print(top_metabolites_MAR)
+print(top_metabolites_OCT)
+print(top_metabolites_SEP)
+print(top_metabolites_TOR)
 
 
