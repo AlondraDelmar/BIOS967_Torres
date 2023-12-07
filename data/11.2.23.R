@@ -121,7 +121,7 @@ dat3=cbind(dat2, t(dat1)) #Combines the "Feature" column with the transposed sta
 #library(ggplot2)
 ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) + # Uses the pivot_longer function to convert the dataframe from wide to long format, creating columns 'name' (variable names), 'Feature', and 'value' (corresponding values). Specifies the aesthetic mappings. 'name' is mapped to the x-axis, 'Feature' to the y-axis, and 'value' to the fill color.
   geom_tile() + #Adds tiles to the plot, creating a heatmap representation of the data.
-  scale_fill_gradient(low = "blue", high = "white") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
+  scale_fill_gradient2(midpoint = 0, low = "blue", mid = "black", high = "red") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
   theme_minimal() + #Applies the 'minimal' theme to the plot, providing a clean and minimalistic appearance.
   labs(title = "Heatmap") + #Sets the title of the plot to "Heatmap"
   theme(axis.text.x = element_text(angle = 48, hjust = 1)) + #rotates the x-axis text by 48 degrees, and hjust = 1 right-aligns the text.
@@ -135,7 +135,7 @@ dat3=cbind(dat2, t(dat1)) # Combines the "Feature" column with the transposed st
 #library(ggplot2)
 ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) + # Uses the pivot_longer function to convert the dataframe from wide to long format, creating columns 'name' (variable names), 'Feature', and 'value' (corresponding values). Specifies the aesthetic mappings. 'name' is mapped to the x-axis, 'Feature' to the y-axis, and 'value' to the fill color.
   geom_tile() + #Adds tiles to the plot, creating a heatmap representation of the data.
-  scale_fill_gradient(low = "blue", high = "white") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
+  scale_fill_gradient2(midpoint = 0, low = "blue", mid = "black", high = "red") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
   theme_minimal() + #Applies the 'minimal' theme to the plot, providing a clean and minimalistic appearance.
   labs(title = "Heatmap") + #Sets the title of the plot to "Heatmap"
   theme(axis.text.x = element_text(angle = 48, hjust = 1)) + #rotates the x-axis text by 48 degrees, and hjust = 1 right-aligns the text.
@@ -149,7 +149,7 @@ dat3=cbind(dat2, t(dat1)) #Combines the "Feature" column with the transposed sta
 #library(ggplot2)
 ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) + # Uses the pivot_longer function to convert the dataframe from wide to long format, creating columns 'name' (variable names), 'Feature', and 'value' (corresponding values). Specifies the aesthetic mappings. 'name' is mapped to the x-axis, 'Feature' to the y-axis, and 'value' to the fill color.
   geom_tile() + #Adds tiles to the plot, creating a heatmap representation of the data.
-  scale_fill_gradient(low = "blue", high = "white") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
+  scale_fill_gradient2(midpoint = 0, low = "blue", mid = "black", high = "red") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
   theme_minimal() + #Applies the 'minimal' theme to the plot, providing a clean and minimalistic appearance.
   labs(title = "Heatmap") + #Sets the title of the plot to "Heatmap"
   theme(axis.text.x = element_text(angle = 48, hjust = 1)) + #rotates the x-axis text by 48 degrees, and hjust = 1 right-aligns the text.
@@ -163,7 +163,7 @@ dat3=cbind(dat2, t(dat1)) #Combines the "Feature" column with the transposed sta
 #library(ggplot2)
 ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) + # Uses the pivot_longer function to convert the dataframe from wide to long format, creating columns 'name' (variable names), 'Feature', and 'value' (corresponding values). Specifies the aesthetic mappings. 'name' is mapped to the x-axis, 'Feature' to the y-axis, and 'value' to the fill color.
   geom_tile() + #Adds tiles to the plot, creating a heatmap representation of the data.
-  scale_fill_gradient(low = "blue", high = "white") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
+  scale_fill_gradient2(midpoint = 0, low = "blue", mid = "black", high = "red") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
   theme_minimal() + #Applies the 'minimal' theme to the plot, providing a clean and minimalistic appearance.
   labs(title = "Heatmap") + #Sets the title of the plot to "Heatmap"
   theme(axis.text.x = element_text(angle = 48, hjust = 1)) + #rotates the x-axis text by 48 degrees, and hjust = 1 right-aligns the text.
@@ -174,10 +174,10 @@ dat1=apply(dat,1,function(x) scale(x)) #Applies the scale function row-wise to s
 t(dat1) #Transposes the standardized data (dat1). This is done to make rows correspond to features (variables) and columns correspond to samples.
 dat2=data.frame(Feature=Brown_adipose_2022[,1]) #Creates a dataframe (dat2) with a single column named "Feature" containing the values from the first column of the original dataframe Brown_adipose_2022. This column typically represents the feature names or IDs.
 dat3=cbind(dat2, t(dat1)) #Combines the "Feature" column with the transposed standardized data (t(dat1)) to create a new dataframe (dat3). This dataframe will be used for plotting the heatmap.
-#library(ggplot2)
+library(ggplot2)
 ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) + # Uses the pivot_longer function to convert the dataframe from wide to long format, creating columns 'name' (variable names), 'Feature', and 'value' (corresponding values). Specifies the aesthetic mappings. 'name' is mapped to the x-axis, 'Feature' to the y-axis, and 'value' to the fill color.
   geom_tile() + #Adds tiles to the plot, creating a heatmap representation of the data.
-  scale_fill_gradient(low = "blue", high = "white") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
+  scale_fill_gradient2(midpoint = 0, low = "blue", mid = "black", high = "red") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
   theme_minimal() + #Applies the 'minimal' theme to the plot, providing a clean and minimalistic appearance.
   labs(title = "Heatmap") + #Sets the title of the plot to "Heatmap"
   theme(axis.text.x = element_text(angle = 48, hjust = 1)) + #rotates the x-axis text by 48 degrees, and hjust = 1 right-aligns the text.

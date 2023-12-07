@@ -1,148 +1,3 @@
----
-title: "Individual Project"
-output: html_document
----
-
-# Load Required Packages
-
-```{r load-packages, echo=TRUE}
-# install.packages("openxlsx")
-library(openxlsx)
-# install.packages("ggplot2")
-library(ggplot2)
-# install.packages("ggpubr")
-# install.packages("ggthemes")
-library(ggpubr)
-library(ggthemes)
-# install.packages("gmodels")
-library(gmodels)
-library(export)
-library(tidyverse)
-```
-
-```{r}
-Brown_adipose_2022 = read.xlsx("Brown adipose 2022.xlsx", rowNames = FALSE)
-head(Brown_adipose_2022)
-dat2 = t(Brown_adipose_2022[, 2:49])
-dat2 = as.data.frame(dat2)
-Type = c(rep("4_IBA", 8), rep("5_MAR", 8), rep("2_OCT", 9), rep("1_SEP", 9), rep("3_TOR", 14))
-dat2$Type = Type
-ord = prcomp(dat2[, 1:356])
-summary(ord)
-```
-
-```{r}
-dt = ord$x
-df = data.frame(dt, dat2$Type)
-xlab = paste0("PC1(", round(summary(ord)$importance[2, 1] * 100, 2), "%)")
-ylab = paste0("PC2(", round(summary(ord)$importance[2, 2] * 100, 2), "%)")
-ggplot(df, aes(df$PC1, df$PC2, color = df$Type)) +
-  stat_ellipse(aes(fill = df$Type), type = "norm", geom = "polygon", alpha = 0.2, color = NA) +
-  guides(fill = "none") +
-  geom_point() +
-  labs(x = xlab, y = ylab, color = "")
-a = Brown_adipose_2022 %>%
-  mutate(feature = seq(1:nrow(Brown_adipose_2022))) %>%
-  select(-Feature) %>%
-  pivot_longer(-feature)
-```
-
-```{}
-dat = Brown_adipose_2022[, 2:49]
-dat1 = apply(dat, 1, function(x) scale(x))
-t(dat1)
-dat2 = data.frame(Feature = Brown_adipose_2022[, 1])
-dat3 = cbind(dat2, t(dat1))
-
-ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) +
-  geom_tile() +
-  scale_fill_gradient(low = "white", high = "red") +
-  theme_minimal() +
-  labs(title = "Heatmap") +
-  theme(axis.text.x = element_text(angle = 48, hjust = 1)) +
-  theme(axis.text.y = element_blank(), axis.text.x = element_blank())
-# IBA Data Heatmap
-dat = Brown_adipose_2022[, 2:9]
-dat1 = apply(dat, 1, function(x) scale(x))
-t(dat1)
-dat2 = data.frame(Feature = Brown_adipose_2022[, 1])
-dat3 = cbind(dat2, t(dat1))
-
-ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) +
-  geom_tile() +
-  scale_fill_gradient(low = "blue", high = "white") +
-  theme_minimal() +
-  labs(title = "Heatmap") +
-  theme(axis.text.x = element_text(angle = 48, hjust = 1)) +
-  theme(axis.text.y = element_blank(), axis.text.x = element_blank())
-
-# MAR Data Heatmap
-dat = Brown_adipose_2022[, 10:17]
-dat1 = apply(dat, 1, function(x) scale(x))
-t(dat1)
-dat2 = data.frame(Feature = Brown_adipose_2022[, 1])
-dat3 = cbind(dat2, t(dat1))
-
-ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) +
-  geom_tile() +
-  scale_fill_gradient(low = "blue", high = "white") +
-  theme_minimal() +
-  labs(title = "Heatmap") +
-  theme(axis.text.x = element_text(angle = 48, hjust = 1)) +
-  theme(axis.text.y = element_blank(), axis.text.x = element_blank())
-
-# OCT Data Heatmap
-dat = Brown_adipose_2022[, 18:26]
-dat1 = apply(dat, 1, function(x) scale(x))
-#t(dat1)
-dat2 = data.frame(Feature = Brown_adipose_2022[, 1])
-dat3 = cbind(dat2, t(dat1))
-```
-
-```{r}
-ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) +
-  geom_tile() +
-  scale_fill_gradient(low = "blue", high = "white") +
-  theme_minimal() +
-  labs(title = "Heatmap") +
-  theme(axis.text.x = element_text(angle = 48, hjust = 1)) +
-  theme(axis.text.y = element_blank(), axis.text.x = element_blank())
-
-# SEP Data Heatmap
-dat = Brown_adipose_2022[, 27:35]
-dat1 = apply(dat, 1, function(x) scale(x))
-#t(dat1)
-dat2 = data.frame(Feature = Brown_adipose_2022[, 1])
-dat3 = cbind(dat2, t(dat1))
-```
-
-```{r}
-
-ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) +
-  geom_tile() +
-  scale_fill_gradient(low = "blue", high = "white") +
-  theme_minimal() +
-  labs(title = "Heatmap") +
-  theme(axis.text.x = element_text(angle = 48, hjust = 1)) +
-  theme(axis.text.y = element_blank(), axis.text.x = element_blank())
-
-# TOR Data Heatmap
-dat = Brown_adipose_2022[, 36:49]
-dat1 = apply(dat, 1, function(x) scale(x))
-t(dat1)
-dat2 = data.frame(Feature = Brown_adipose_2022[, 1])
-dat3 = cbind(dat2, t(dat1))
-
-ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) +
-  geom_tile() +
-  scale_fill_gradient(low = "blue", high = "white") +
-  theme_minimal() +
-  labs(title = "Heatmap") +
-  theme(axis.text.x = element_text(angle = 48, hjust = 1)) 
-```
-
-
-```{r}
 
 #Starting Individual Project
 
@@ -239,7 +94,7 @@ dat3=cbind(dat2, t(dat1)) #Combines 'Feature' column with the transposed standar
 library(ggplot2)# generate the heatmap
 ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) + # Uses the pivot_longer function to convert the dataframe from wide to long format, creating columns 'name' (variable names), 'Feature', and 'value' (corresponding values). Specifies the aesthetic mappings. 'name' is mapped to the x-axis, 'Feature' to the y-axis, and 'value' to the fill color.
   geom_tile() + #Adds tiles to the plot, creating a heatmap representation of the data.
-    scale_fill_gradient(low = "white", high = "red") + # Sets the color scale for the fill color. The heatmap will have a gradient from white (low values) to red (high values).
+  scale_fill_gradient(low = "white", high = "red") + # Sets the color scale for the fill color. The heatmap will have a gradient from white (low values) to red (high values).
   theme_minimal() + ##Applies the 'minimal' theme to the plot, providing a clean and minimalistic appearance.
   labs(title = "Heatmap") + #Sets the title of the plot to "Heatmap"
   theme(axis.text.x = element_text(angle = 48, hjust = 1)) + #rotates the x-axis text by 48 degrees, and hjust = 1 right-aligns the text.
@@ -250,11 +105,11 @@ ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = va
 #The data should be separate according to the variable
 Brown_adipose_2022[1,] #check the variable id and get the column of order of each variable
 #According to the results shown in the console, the variables are in the order:
-  #1 columns 2-9 are IBA.
-  #2 columns 10-17 are MAR.
-  #3 columns 18-26 are OCT.
-  #4 columns 27-35 are SEPT.
-  #5 columns 36-49 are TOR.
+#1 columns 2-9 are IBA.
+#2 columns 10-17 are MAR.
+#3 columns 18-26 are OCT.
+#4 columns 27-35 are SEPT.
+#5 columns 36-49 are TOR.
 
 #IBA data heatmap
 dat=Brown_adipose_2022[,2:9] #Extracts columns 2 to 9 from the dataframe
@@ -266,7 +121,7 @@ dat3=cbind(dat2, t(dat1)) #Combines the "Feature" column with the transposed sta
 #library(ggplot2)
 ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) + # Uses the pivot_longer function to convert the dataframe from wide to long format, creating columns 'name' (variable names), 'Feature', and 'value' (corresponding values). Specifies the aesthetic mappings. 'name' is mapped to the x-axis, 'Feature' to the y-axis, and 'value' to the fill color.
   geom_tile() + #Adds tiles to the plot, creating a heatmap representation of the data.
-  scale_fill_gradient(low = "blue", high = "white") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
+  scale_fill_gradient2(midpoint = 0, low = "blue", mid = "black", high = "red") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
   theme_minimal() + #Applies the 'minimal' theme to the plot, providing a clean and minimalistic appearance.
   labs(title = "Heatmap") + #Sets the title of the plot to "Heatmap"
   theme(axis.text.x = element_text(angle = 48, hjust = 1)) + #rotates the x-axis text by 48 degrees, and hjust = 1 right-aligns the text.
@@ -280,7 +135,7 @@ dat3=cbind(dat2, t(dat1)) # Combines the "Feature" column with the transposed st
 #library(ggplot2)
 ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) + # Uses the pivot_longer function to convert the dataframe from wide to long format, creating columns 'name' (variable names), 'Feature', and 'value' (corresponding values). Specifies the aesthetic mappings. 'name' is mapped to the x-axis, 'Feature' to the y-axis, and 'value' to the fill color.
   geom_tile() + #Adds tiles to the plot, creating a heatmap representation of the data.
-  scale_fill_gradient(low = "blue", high = "white") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
+  scale_fill_gradient2(midpoint = 0, low = "blue", mid = "black", high = "red") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
   theme_minimal() + #Applies the 'minimal' theme to the plot, providing a clean and minimalistic appearance.
   labs(title = "Heatmap") + #Sets the title of the plot to "Heatmap"
   theme(axis.text.x = element_text(angle = 48, hjust = 1)) + #rotates the x-axis text by 48 degrees, and hjust = 1 right-aligns the text.
@@ -294,7 +149,7 @@ dat3=cbind(dat2, t(dat1)) #Combines the "Feature" column with the transposed sta
 #library(ggplot2)
 ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) + # Uses the pivot_longer function to convert the dataframe from wide to long format, creating columns 'name' (variable names), 'Feature', and 'value' (corresponding values). Specifies the aesthetic mappings. 'name' is mapped to the x-axis, 'Feature' to the y-axis, and 'value' to the fill color.
   geom_tile() + #Adds tiles to the plot, creating a heatmap representation of the data.
-  scale_fill_gradient(low = "blue", high = "white") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
+  scale_fill_gradient2(midpoint = 0, low = "blue", mid = "black", high = "red") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
   theme_minimal() + #Applies the 'minimal' theme to the plot, providing a clean and minimalistic appearance.
   labs(title = "Heatmap") + #Sets the title of the plot to "Heatmap"
   theme(axis.text.x = element_text(angle = 48, hjust = 1)) + #rotates the x-axis text by 48 degrees, and hjust = 1 right-aligns the text.
@@ -308,7 +163,7 @@ dat3=cbind(dat2, t(dat1)) #Combines the "Feature" column with the transposed sta
 #library(ggplot2)
 ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) + # Uses the pivot_longer function to convert the dataframe from wide to long format, creating columns 'name' (variable names), 'Feature', and 'value' (corresponding values). Specifies the aesthetic mappings. 'name' is mapped to the x-axis, 'Feature' to the y-axis, and 'value' to the fill color.
   geom_tile() + #Adds tiles to the plot, creating a heatmap representation of the data.
-  scale_fill_gradient(low = "blue", high = "white") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
+  scale_fill_gradient2(midpoint = 0, low = "blue", mid = "black", high = "red") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
   theme_minimal() + #Applies the 'minimal' theme to the plot, providing a clean and minimalistic appearance.
   labs(title = "Heatmap") + #Sets the title of the plot to "Heatmap"
   theme(axis.text.x = element_text(angle = 48, hjust = 1)) + #rotates the x-axis text by 48 degrees, and hjust = 1 right-aligns the text.
@@ -319,12 +174,39 @@ dat1=apply(dat,1,function(x) scale(x)) #Applies the scale function row-wise to s
 t(dat1) #Transposes the standardized data (dat1). This is done to make rows correspond to features (variables) and columns correspond to samples.
 dat2=data.frame(Feature=Brown_adipose_2022[,1]) #Creates a dataframe (dat2) with a single column named "Feature" containing the values from the first column of the original dataframe Brown_adipose_2022. This column typically represents the feature names or IDs.
 dat3=cbind(dat2, t(dat1)) #Combines the "Feature" column with the transposed standardized data (t(dat1)) to create a new dataframe (dat3). This dataframe will be used for plotting the heatmap.
-#library(ggplot2)
+library(ggplot2)
 ggplot(data = pivot_longer(dat3, -Feature), aes(x = name, y = Feature, fill = value)) + # Uses the pivot_longer function to convert the dataframe from wide to long format, creating columns 'name' (variable names), 'Feature', and 'value' (corresponding values). Specifies the aesthetic mappings. 'name' is mapped to the x-axis, 'Feature' to the y-axis, and 'value' to the fill color.
   geom_tile() + #Adds tiles to the plot, creating a heatmap representation of the data.
-  scale_fill_gradient(low = "blue", mid = "white", high = "red") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
+  scale_fill_gradient2(midpoint = 0, low = "blue", mid = "black", high = "red") + #Sets the color scale for the fill color. The heatmap will have a gradient from Blue (low values) to White (high values).
   theme_minimal() + #Applies the 'minimal' theme to the plot, providing a clean and minimalistic appearance.
   labs(title = "Heatmap") + #Sets the title of the plot to "Heatmap"
   theme(axis.text.x = element_text(angle = 48, hjust = 1)) + #rotates the x-axis text by 48 degrees, and hjust = 1 right-aligns the text.
   theme(axis.text.y=element_blank(), axis.text.x=element_blank()) #Hides the y-axis and x-axis text, providing a cleaner look when axis labels are not necessary.
-```
+# Function to determine top metabolites for each variable
+get_top_metabolites <- function(data, variable_columns, num_top_metabolites = 10) {
+  dat = data[, variable_columns]
+  dat1 = apply(dat, 1, function(x) scale(x))
+  top_metabolites_indices = apply(dat1, 1, function(x) order(x, decreasing = TRUE)[1:num_top_metabolites])
+  top_metabolites = rownames(dat)[top_metabolites_indices]
+  return(top_metabolites)
+}
+
+# Determine top metabolites for the entire dataset
+top_metabolites_all = get_top_metabolites(Brown_adipose_2022, 2:49)
+
+# Determine top metabolites for each variable
+top_metabolites_IBA = get_top_metabolites(Brown_adipose_2022, 2:9)
+top_metabolites_MAR = get_top_metabolites(Brown_adipose_2022, 10:17)
+top_metabolites_OCT = get_top_metabolites(Brown_adipose_2022, 18:26)
+top_metabolites_SEP = get_top_metabolites(Brown_adipose_2022, 27:35)
+top_metabolites_TOR = get_top_metabolites(Brown_adipose_2022, 36:49)
+
+# Print  the top metabolites
+print(top_metabolites_all)
+print(top_metabolites_IBA)
+print(top_metabolites_MAR)
+print(top_metabolites_OCT)
+print(top_metabolites_SEP)
+print(top_metabolites_TOR)
+
+
